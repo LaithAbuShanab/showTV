@@ -24,7 +24,7 @@ class EpisodeResource extends Resource
 
     protected static ?string $navigationGroup = 'TV Shows';
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form
     {
@@ -33,12 +33,21 @@ class EpisodeResource extends Resource
                 Forms\Components\Section::make('Show')
                     ->description('This episode belongs to a TV show.')
                     ->schema([
-                        Forms\Components\Select::make('show_id')
-                            ->relationship('show', 'title')
-                            ->required()
-                            ->searchable()
-                            ->preload()
-                            ->label('TV Show')
+                        Forms\Components\Select::make('season_id')
+                        ->label('TV Show')
+                        ->required()
+                        ->searchable()
+                        ->preload()
+                        ->options(function () {
+                            return \App\Models\Season::with('show')
+                                ->get()
+                                ->mapWithKeys(function ($season) {
+                                    return [
+                                        $season->id => "{$season->show->title} ({$season->title})"
+                                    ];
+                                });
+                        }),
+
                     ])
                     ->columns(1)
                     ->collapsible(),
@@ -91,7 +100,7 @@ class EpisodeResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('show.title')
+                Tables\Columns\TextColumn::make('season.show.title')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('title')
@@ -131,10 +140,17 @@ class EpisodeResource extends Resource
                 InfoSection::make('Show')
                     ->description('The TV show this episode belongs to.')
                     ->schema([
-                        TextEntry::make('show.title')
+                        InfoGrid::make(2)->schema([
+                            TextEntry::make('season.show.title')
                             ->label('TV Show')
                             ->badge()
                             ->color('info'),
+
+                        TextEntry::make('season.title')
+                            ->label('Season')
+                            ->badge()
+                            ->color('warning'),
+                        ]),
                     ])
                     ->columns(1)
                     ->collapsible(),

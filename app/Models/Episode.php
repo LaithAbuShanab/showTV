@@ -14,17 +14,17 @@ class Episode extends Model implements HasMedia
     use InteractsWithMedia;
 
     protected $fillable = [
+        'season_id',
         'episode_number',
-        'show_id',
         'title',
         'description',
         'duration',
         'airing_time',
     ];
 
-    public function show(): BelongsTo
+    public function season()
     {
-        return $this->belongsTo(Show::class);
+        return $this->belongsTo(Season::class);
     }
 
     public function registerMediaCollections(): void

@@ -116,7 +116,7 @@ class UserResource extends Resource
             ])->modifyQueryUsing(function (Builder $query) {
                 $query
                     ->where('id', '!=', Auth::id())
-                    ->orWhere('id', '!=', 1);
+                    ->where('id', '!=', 1);
             });
     }
 

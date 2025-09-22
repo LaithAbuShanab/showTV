@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ShowResource\Pages;
 use App\Filament\Resources\ShowResource\RelationManagers;
 use App\Filament\Resources\ShowResource\RelationManagers\EpisodesRelationManager;
+use App\Filament\Resources\ShowResource\RelationManagers\SeasonsRelationManager;
 use App\Models\Episode;
 use App\Models\Show;
 use Filament\Forms;
@@ -203,7 +204,7 @@ class ShowResource extends Resource
     public static function getRelations(): array
     {
         return [
-            EpisodesRelationManager::class,
+            SeasonsRelationManager::class,
         ];
     }
 

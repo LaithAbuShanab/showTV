@@ -36,6 +36,7 @@ class TagResource extends Resource
                                 Forms\Components\TextInput::make('name')
                                     ->required()
                                     ->maxLength(255)
+                                    ->unique(ignoreRecord: true)
                                     ->label('Tag Name'),
                             ]),
                     ])

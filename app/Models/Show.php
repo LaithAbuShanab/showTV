@@ -25,9 +25,9 @@ class Show extends Model implements HasMedia
         return $this->belongsToMany(Tag::class, 'tag_show');
     }
 
-    public function episodes()
+    public function seasons()
     {
-        return $this->hasMany(Episode::class);
+        return $this->hasMany(Season::class);
     }
 
     public function registerMediaCollections(): void
