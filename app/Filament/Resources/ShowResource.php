@@ -4,6 +4,8 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ShowResource\Pages;
 use App\Filament\Resources\ShowResource\RelationManagers;
+use App\Filament\Resources\ShowResource\RelationManagers\EpisodesRelationManager;
+use App\Models\Episode;
 use App\Models\Show;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -23,6 +25,8 @@ class ShowResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-tv';
 
     protected static ?string $navigationGroup = 'TV Shows';
+
+    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {
@@ -199,7 +203,7 @@ class ShowResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            EpisodesRelationManager::class,
         ];
     }
 

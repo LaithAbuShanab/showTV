@@ -9,33 +9,36 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Show extends Model implements HasMedia
+class Episode extends Model implements HasMedia
 {
     use InteractsWithMedia;
 
-    protected $fillable = ['title', 'description', 'airing_time', 'category_id'];
+    protected $fillable = [
+        'episode_number',
+        'show_id',
+        'title',
+        'description',
+        'duration',
+        'airing_time',
+    ];
 
-    public function category(): BelongsTo
+    public function show(): BelongsTo
     {
-        return $this->belongsTo(Category::class);
-    }
-
-    public function tags(): BelongsToMany
-    {
-        return $this->belongsToMany(Tag::class, 'tag_show');
-    }
-
-    public function episodes()
-    {
-        return $this->hasMany(Episode::class);
+        return $this->belongsTo(Show::class);
     }
 
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection('show_cover')
+        $this->addMediaCollection('episode_cover')
             ->singleFile()
             ->registerMediaConversions(function (Media $media) {
                 $this->addMediaConversion('thumbnail')->format('webp')->nonQueued();
+            });
+
+        $this->addMediaCollection('episode_video')
+            ->singleFile()
+            ->registerMediaConversions(function (Media $media) {
+                $this->addMediaConversion('video')->format('webp')->nonQueued();
             });
     }
 }

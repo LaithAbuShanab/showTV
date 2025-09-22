@@ -10,7 +10,7 @@ class Tag extends Model
         'name',
     ];
 
-    public function vShows()
+    public function show()
     {
         return $this->belongsToMany(Show::class, 'tag_show');
     }
