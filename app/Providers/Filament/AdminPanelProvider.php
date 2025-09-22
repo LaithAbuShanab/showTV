@@ -28,7 +28,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
-            ->brandName('TV Show')
+            ->brandName('SHOW TV')
             ->login()
             ->colors([
                 'primary' => Color::Amber,

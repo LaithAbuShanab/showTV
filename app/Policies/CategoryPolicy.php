@@ -2,10 +2,11 @@
 
 namespace App\Policies;
 
+use App\Models\Category;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class UserPolicy
+class CategoryPolicy
 {
     use HandlesAuthorization;
 
@@ -14,15 +15,15 @@ class UserPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_user');
+        return $user->can('view_any_category');
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, User $userM): bool
+    public function view(User $user, Category $category): bool
     {
-        return $user->can('view_user');
+        return $user->can('view_category');
     }
 
     /**
@@ -30,23 +31,23 @@ class UserPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_user');
+        return $user->can('create_category');
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, User $userM): bool
+    public function update(User $user, Category $category): bool
     {
-        return $user->can('update_user');
+        return $user->can('update_category');
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, User $userM): bool
+    public function delete(User $user, Category $category): bool
     {
-        return $user->can('delete_user');
+        return $user->can('delete_category');
     }
 
     /**
@@ -54,13 +55,13 @@ class UserPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_user');
+        return $user->can('delete_any_category');
     }
 
     /**
      * Determine whether the user can permanently delete.
      */
-    public function forceDelete(User $user, User $userM): bool
+    public function forceDelete(User $user, Category $category): bool
     {
         return $user->can('{{ ForceDelete }}');
     }
@@ -76,7 +77,7 @@ class UserPolicy
     /**
      * Determine whether the user can restore.
      */
-    public function restore(User $user, User $userM): bool
+    public function restore(User $user, Category $category): bool
     {
         return $user->can('{{ Restore }}');
     }
@@ -92,7 +93,7 @@ class UserPolicy
     /**
      * Determine whether the user can replicate.
      */
-    public function replicate(User $user, User $userM): bool
+    public function replicate(User $user, Category $category): bool
     {
         return $user->can('{{ Replicate }}');
     }
