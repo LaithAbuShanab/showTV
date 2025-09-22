@@ -9,4 +9,10 @@ class Tag extends Model
     protected $fillable = [
         'name',
     ];
+
+    public function vShows()
+    {
+        return $this->belongsToMany(Show::class, 'tag_show');
+    }
+
 }
