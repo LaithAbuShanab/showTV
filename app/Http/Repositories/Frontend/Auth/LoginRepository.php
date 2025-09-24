@@ -1,31 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Repositories\Frontend\Auth;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Auth\Events\Lockout;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
-use Illuminate\View\View;
+use Illuminate\Auth\Events\Lockout;
+use Illuminate\Http\Request;
 
-class LoginController extends Controller
+class LoginRepository
 {
-    public function create(): View
+    public function store(Request $request): void
     {
-        return view('frontend.auth.login');
-    }
-
-    public function store(Request $request): RedirectResponse
-    {
-        $request->validate([
-            'email' => ['required', 'string', 'email'],
-            'password' => ['required', 'string'],
-        ]);
-
         $this->ensureIsNotRateLimited($request);
 
         if (! Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
@@ -39,19 +26,13 @@ class LoginController extends Controller
         RateLimiter::clear($this->throttleKey($request));
 
         $request->session()->regenerate();
-
-        return redirect()->intended(route('dashboard', absolute: false));
     }
 
-    public function destroy(Request $request): RedirectResponse
+    public function destroy(Request $request): void
     {
         Auth::guard('web')->logout();
-
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
-
-        return redirect('/');
     }
 
     protected function ensureIsNotRateLimited(Request $request): void
@@ -74,6 +55,6 @@ class LoginController extends Controller
 
     public function throttleKey(Request $request): string
     {
-        return Str::transliterate(Str::lower($request->string('email')).'|'.$request->ip());
+        return Str::transliterate(Str::lower($request->string('email')) . '|' . $request->ip());
     }
 }

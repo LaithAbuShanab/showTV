@@ -71,7 +71,7 @@
                     <div class="col-6 col-sm-4 col-lg-3 col-xl-2">
                         <div class="card">
                             <div class="card__cover">
-                                <img src="{{ $show->getFirstMediaUrl('show_cover', 'thumbnail') }}" alt="">
+                                <img src="{{ $show->getFirstMediaUrl('show_cover', 'thumbnail') }}" alt="" style="height: 236.89px">
                                 <a href="{{ route('show.index', $show->id) }}" class="card__play">
                                     <i class="icon ion-ios-play"></i>
                                 </a>
@@ -92,25 +92,4 @@
         </div>
     </div>
     <!-- end catalog -->
-@endsection
-
-@section('scripts')
-    <script>
-        document.querySelectorAll('[data-tag-id]').forEach(item => {
-            item.addEventListener('click', function() {
-                const tagName = this.textContent;
-                const tagId = this.getAttribute('data-tag-id');
-
-                document.querySelector('#selectedTag').value = tagId;
-                document.querySelector('#filter-genre input[type="button"]').value = tagName;
-            });
-        });
-
-        document.querySelector('.filter__btn').addEventListener('click', function() {
-            const tagId = document.querySelector('#selectedTag').value;
-            if (tagId) {
-                window.location.href = `/random/filter?tag_id=${tagId}`;
-            }
-        });
-    </script>
 @endsection

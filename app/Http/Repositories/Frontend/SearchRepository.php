@@ -22,7 +22,7 @@ class SearchRepository
                     'title'    => $show->title,
                     'type'     => 'Show',
                     'category' => $show->category->name ?? '',
-                    'image'    => $show->getFirstMediaUrl('show_cover', 'thumbnail'),
+                    'image'    => $show->getFirstMediaUrl('show_cover', 'thumbnail') ?: asset('frontend/img/default.png'),
                 ];
             });
 
@@ -36,7 +36,7 @@ class SearchRepository
                     'title'    => $episode->title,
                     'type'     => 'Episode',
                     'category' => 'Episode',
-                    'image'    => $episode->getFirstMediaUrl('episode_cover', 'thumbnail'),
+                    'image'    => $episode->getFirstMediaUrl('episode_cover', 'thumbnail') ?: asset('frontend/img/default.png'),
                 ];
             });
 

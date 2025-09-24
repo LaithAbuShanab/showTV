@@ -50,7 +50,6 @@
                                             @endforeach
                                         </li>
                                         <li><span>Running time:</span> {{ $show->airing_time }}</li>
-                                        <li><span>Country:</span> <a href="#">JO</a> </li>
                                     </ul>
 
                                     <div class="card__description card__description--details">
@@ -78,8 +77,12 @@
                         </video>
                     </div>
                 @else
-                    <div class="col-12">
-                        <div style="color: #ff55a5">No episode available for this show.</div>
+                    <div class="col-12 col-xl-6">
+                        <video controls crossorigin playsinline poster="{{ asset('frontend/img/sorry.png') }}"
+                            id="player">
+                            <source src="{{ $videoUrl }}" type="video/mp4">
+                            <a href="{{ $videoUrl }}" download>Download</a>
+                        </video>
                     </div>
                 @endif
                 <!-- end player -->
@@ -116,6 +119,7 @@
                                                             <th>#</th>
                                                             <th>Title</th>
                                                             <th>Time</th>
+                                                            <th>Day</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -127,6 +131,9 @@
                                                                 </th>
                                                                 <td>
                                                                     {{ $episode->title }}
+                                                                </td>
+                                                                <td>
+                                                                    {{ $episode->duration }}
                                                                 </td>
                                                                 <td>
                                                                     {{ $episode->airing_time }}

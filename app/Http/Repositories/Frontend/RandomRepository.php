@@ -10,7 +10,7 @@ class RandomRepository
     public function index()
     {
         return [
-            'randomly' => Show::with('tags')->inRandomOrder()->limit(10)->get(),
+            'randomly' => Show::with('tags')->inRandomOrder()->limit(6)->get(),
             'tags'     => Tag::all(),
         ];
     }
@@ -22,7 +22,7 @@ class RandomRepository
         return [
             'tags'     => Tag::all(),
             'tag'      => $tag,
-            'randomly' => $tag->show()->inRandomOrder()->limit(10)->get(),
+            'randomly' => $tag->show()->inRandomOrder()->limit(6)->get(),
         ];
     }
 

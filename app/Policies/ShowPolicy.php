@@ -3,7 +3,7 @@
 namespace App\Policies;
 
 use App\Models\Show;
-use App\Models\User;
+use App\Models\Admin;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class ShowPolicy
@@ -13,7 +13,7 @@ class ShowPolicy
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(User $user): bool
+    public function viewAny(Admin $user): bool
     {
         return $user->can('view_any_show');
     }
@@ -21,7 +21,7 @@ class ShowPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Show $show): bool
+    public function view(Admin $user, Show $show): bool
     {
         return $user->can('view_show');
     }
@@ -29,7 +29,7 @@ class ShowPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): bool
+    public function create(Admin $user): bool
     {
         return $user->can('create_show');
     }
@@ -37,7 +37,7 @@ class ShowPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Show $show): bool
+    public function update(Admin $user, Show $show): bool
     {
         return $user->can('update_show');
     }
@@ -45,7 +45,7 @@ class ShowPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Show $show): bool
+    public function delete(Admin $user, Show $show): bool
     {
         return $user->can('delete_show');
     }
@@ -53,7 +53,7 @@ class ShowPolicy
     /**
      * Determine whether the user can bulk delete.
      */
-    public function deleteAny(User $user): bool
+    public function deleteAny(Admin $user): bool
     {
         return $user->can('delete_any_show');
     }
@@ -61,7 +61,7 @@ class ShowPolicy
     /**
      * Determine whether the user can permanently delete.
      */
-    public function forceDelete(User $user, Show $show): bool
+    public function forceDelete(Admin $user, Show $show): bool
     {
         return $user->can('{{ ForceDelete }}');
     }
@@ -69,7 +69,7 @@ class ShowPolicy
     /**
      * Determine whether the user can permanently bulk delete.
      */
-    public function forceDeleteAny(User $user): bool
+    public function forceDeleteAny(Admin $user): bool
     {
         return $user->can('{{ ForceDeleteAny }}');
     }
@@ -77,7 +77,7 @@ class ShowPolicy
     /**
      * Determine whether the user can restore.
      */
-    public function restore(User $user, Show $show): bool
+    public function restore(Admin $user, Show $show): bool
     {
         return $user->can('{{ Restore }}');
     }
@@ -85,7 +85,7 @@ class ShowPolicy
     /**
      * Determine whether the user can bulk restore.
      */
-    public function restoreAny(User $user): bool
+    public function restoreAny(Admin $user): bool
     {
         return $user->can('{{ RestoreAny }}');
     }
@@ -93,7 +93,7 @@ class ShowPolicy
     /**
      * Determine whether the user can replicate.
      */
-    public function replicate(User $user, Show $show): bool
+    public function replicate(Admin $user, Show $show): bool
     {
         return $user->can('{{ Replicate }}');
     }
@@ -101,7 +101,7 @@ class ShowPolicy
     /**
      * Determine whether the user can reorder.
      */
-    public function reorder(User $user): bool
+    public function reorder(Admin $user): bool
     {
         return $user->can('{{ Reorder }}');
     }

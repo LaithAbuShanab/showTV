@@ -10,13 +10,19 @@ class HomePageRepository
 {
     public function index()
     {
+        $episodes = Episode::with('season.show.tags')
+            ->latest()
+            ->get()
+            ->unique(fn($episode) => $episode->season->show->id)
+            ->take(5)
+            ->values();
+
         return [
-            'episodes'   => Episode::with('season.show.tags')->latest()->take(5)->get(),
+            'episodes'   => $episodes,
             'categories' => Category::with(['shows.tags'])->get(),
-            'newShows'   => Show::with('tags')->latest()->take(5)->get(),
+            'newShows'   => Show::with('tags')->latest()->take(6)->get(),
         ];
     }
-
     public function randomly()
     {
         return Show::with('tags')->inRandomOrder()->limit(5)->get();

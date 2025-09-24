@@ -51,7 +51,6 @@
                                             @endforeach
                                         </li>
                                         <li><span>Running time:</span> {{ $show->airing_time }}</li>
-                                        <li><span>Country:</span> <a href="#">JO</a> </li>
                                     </ul>
 
                                     <div class="card__description card__description--details">
@@ -123,6 +122,7 @@
                                                             <th>#</th>
                                                             <th>Title</th>
                                                             <th>Time</th>
+                                                            <th>Day</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -134,6 +134,9 @@
                                                                 </th>
                                                                 <td>
                                                                     {{ $ep->title }}
+                                                                </td>
+                                                                <td>
+                                                                    {{ $ep->duration }}
                                                                 </td>
                                                                 <td>
                                                                     {{ $ep->airing_time }}

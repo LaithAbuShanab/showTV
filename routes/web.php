@@ -15,20 +15,21 @@ Route::prefix('random')->name('random.')->group(function () {
     Route::get('/filter', [RandomController::class, 'filterByTag'])->name('filter');
 });
 
-Route::prefix('show')->name('show.')->group(function () {
-    Route::get('/{show_id}', [ShowController::class, 'index'])->name('index');
-});
-
-Route::prefix('episode')->name('episode.')->group(function () {
-    Route::get('/{episode}', [EpisodeController::class, 'index'])->name('index');
-});
-
 Route::prefix('search')->name('search.')->group(function () {
     Route::get('/', [SearchController::class, 'index'])->name('index');
 });
 
 Route::view('dashboard', 'dashboard')->middleware(['auth', 'verified'])->name('dashboard');
 Route::middleware(['auth'])->group(function () {
+
+    Route::prefix('show')->name('show.')->group(function () {
+        Route::get('/{show_id}', [ShowController::class, 'index'])->name('index');
+    });
+
+    Route::prefix('episode')->name('episode.')->group(function () {
+        Route::get('/{episode}', [EpisodeController::class, 'index'])->name('index');
+    });
+
     Route::get('settings/profile', [Settings\ProfileController::class, 'edit'])->name('settings.profile.edit');
     Route::put('settings/profile', [Settings\ProfileController::class, 'update'])->name('settings.profile.update');
     Route::delete('settings/profile', [Settings\ProfileController::class, 'destroy'])->name('settings.profile.destroy');

@@ -33,7 +33,8 @@
                                 <div class="card card--big">
                                     <div class="card__cover">
                                         <img src="{{ $episode->getFirstMediaUrl('episode_cover', 'thumbnail') }}"
-                                            alt="">
+                                            alt=""
+                                            style="height: 382.78px">
                                         <a href="{{ route('episode.index', $episode) }}" class="card__play">
                                             <i class="icon ion-ios-play"></i>
                                         </a>
@@ -111,7 +112,8 @@
                                         <div class="col-12 col-sm-4">
                                             <div class="card__cover">
                                                 <img src="{{ $show->getFirstMediaUrl('show_cover', 'thumbnail') }}"
-                                                    alt="">
+                                                    alt=""
+                                                    style="height: 236.89px">
                                                 <a href="{{ route('show.index', $show->id) }}" class="card__play">
                                                     <i class="icon ion-ios-play"></i>
                                                 </a>
@@ -149,7 +151,7 @@
                                 <div class="col-6 col-sm-4 col-lg-3 col-xl-2">
                                     <div class="card">
                                         <div class="card__cover">
-                                            <img src="{{ $show->getFirstMediaUrl('show_cover', 'thumbnail') }}" alt="">
+                                            <img src="{{ $show->getFirstMediaUrl('show_cover', 'thumbnail') }}" alt="" style="height: 236.89px">
                                             <a href="{{ route('show.index', $show->id) }}" class="card__play">
                                                 <i class="icon ion-ios-play"></i>
                                             </a>

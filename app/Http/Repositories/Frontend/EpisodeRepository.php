@@ -2,9 +2,6 @@
 
 namespace App\Http\Repositories\Frontend;
 
-use App\Models\Show;
-use App\Models\Tag;
-
 class EpisodeRepository
 {
     public function index($episode)
