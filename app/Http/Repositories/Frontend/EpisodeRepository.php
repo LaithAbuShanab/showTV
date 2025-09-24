@@ -1,0 +1,20 @@
+<?php
+
+namespace App\Http\Repositories\Frontend;
+
+use App\Models\Show;
+use App\Models\Tag;
+
+class EpisodeRepository
+{
+    public function index($episode)
+    {
+        return [
+            'episode'          => $episode,
+            'season'           => $episode->season,
+            'show'             => $episode->season->show,
+            'currentEpisodeId' => $episode->id,
+            'currentSeasonId'  => $episode->season_id,
+        ];
+    }
+}
