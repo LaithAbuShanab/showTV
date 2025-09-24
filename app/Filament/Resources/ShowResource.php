@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ShowResource\Pages;
 use App\Filament\Resources\ShowResource\RelationManagers;
 use App\Filament\Resources\ShowResource\RelationManagers\EpisodesRelationManager;
+use App\Filament\Resources\ShowResource\RelationManagers\FollowersRelationManager;
 use App\Filament\Resources\ShowResource\RelationManagers\SeasonsRelationManager;
 use App\Models\Episode;
 use App\Models\Show;
@@ -205,6 +206,7 @@ class ShowResource extends Resource
     {
         return [
             SeasonsRelationManager::class,
+            FollowersRelationManager::class,
         ];
     }
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Http\Repositories\Frontend\ShowRepository;
+use App\Models\Show;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -20,4 +21,13 @@ class ShowController extends Controller
             Log::error('Error: ' . $e->getMessage(), ['exception' => $e]);
         }
     }
-}
+
+    public function toggleFollow(Request $request)
+    {
+        try {
+            $data = $this->showRepository->toggleFollow($request);
+            return response()->json($data);
+        } catch (\Exception $e) {
+            Log::error('Error: ' . $e->getMessage(), ['exception' => $e]);
+        }
+    }}

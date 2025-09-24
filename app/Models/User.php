@@ -71,4 +71,14 @@ class User extends Authenticatable implements HasMedia
                 $this->addMediaConversion('user_avatar')->format('webp')->nonQueued();
             });
     }
+
+    public function follows()
+    {
+        return $this->belongsToMany(Show::class, 'follows')->withTimestamps();
+    }
+
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
 }

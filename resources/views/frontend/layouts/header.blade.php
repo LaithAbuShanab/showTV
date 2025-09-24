@@ -194,67 +194,69 @@
 </div>
 
 @section('scripts')
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
 
-        const avatarInput = document.getElementById('avatar');
-        const fileNameSpan = document.getElementById('file-name');
-        const avatarPreview = document.getElementById('avatarPreview');
+            const avatarInput = document.getElementById('avatar');
+            const fileNameSpan = document.getElementById('file-name');
+            const avatarPreview = document.getElementById('avatarPreview');
 
-        if (avatarInput && fileNameSpan && avatarPreview) {
-            avatarInput.addEventListener('change', function(event) {
-                const file = avatarInput.files[0];
-                if (file) {
-                    fileNameSpan.textContent = file.name;
+            if (avatarInput && fileNameSpan && avatarPreview) {
+                avatarInput.addEventListener('change', function(event) {
+                    const file = avatarInput.files[0];
+                    if (file) {
+                        fileNameSpan.textContent = file.name;
 
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        avatarPreview.src = e.target.result;
-                        avatarPreview.style.display = 'block';
-                    };
-                    reader.readAsDataURL(file);
-                } else {
-                    fileNameSpan.textContent = "No file chosen";
-                    avatarPreview.style.display = 'none';
-                }
-            });
-        }
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            avatarPreview.src = e.target.result;
+                            avatarPreview.style.display = 'block';
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        fileNameSpan.textContent = "No file chosen";
+                        avatarPreview.style.display = 'none';
+                    }
+                });
+            }
 
-        const toggle = document.getElementById('userToggle');
-        const menu = document.getElementById('userDropdownMenu');
+            const toggle = document.getElementById('userToggle');
+            const menu = document.getElementById('userDropdownMenu');
 
-        if (toggle && menu) {
-            toggle.addEventListener('click', function(e) {
-                e.stopPropagation();
-                menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
-            });
+            if (toggle && menu) {
+                toggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+                });
 
-            document.addEventListener('click', function () {
-                menu.style.display = 'none';
-            });
-        }
+                document.addEventListener('click', function() {
+                    menu.style.display = 'none';
+                });
+            }
 
-        function doSearch() {
-            const searchInput = $('#search-input');
-            if (!searchInput.length) return;
+            function doSearch() {
+                const searchInput = $('#search-input');
+                if (!searchInput.length) return;
 
-            let query = searchInput.val().trim();
+                let query = searchInput.val().trim();
 
-            if (query.length > 1) {
-                $.ajax({
-                    url: "/search",
-                    type: "GET",
-                    data: { q: query },
-                    success: function(data) {
-                        const resultsDiv = $('#popup-results');
-                        if (!resultsDiv.length) return;
+                if (query.length > 1) {
+                    $.ajax({
+                        url: "/search",
+                        type: "GET",
+                        data: {
+                            q: query
+                        },
+                        success: function(data) {
+                            const resultsDiv = $('#popup-results');
+                            if (!resultsDiv.length) return;
 
-                        resultsDiv.empty();
+                            resultsDiv.empty();
 
-                        if (data.shows.length > 0) {
-                            resultsDiv.append("<h4>Shows</h4>");
-                            data.shows.forEach(item => {
-                                resultsDiv.append(`
+                            if (data.shows.length > 0) {
+                                resultsDiv.append("<h4>Shows</h4>");
+                                data.shows.forEach(item => {
+                                    resultsDiv.append(`
                                     <a href="/show/${item.id}" class="search-item">
                                         <img src="${item.image}" alt="${item.title}" style="height: 90.06px;">
                                         <div>
@@ -263,13 +265,13 @@
                                         </div>
                                     </a>
                                 `);
-                            });
-                        }
+                                });
+                            }
 
-                        if (data.episodes.length > 0) {
-                            resultsDiv.append("<h4>Episodes</h4>");
-                            data.episodes.forEach(item => {
-                                resultsDiv.append(`
+                            if (data.episodes.length > 0) {
+                                resultsDiv.append("<h4>Episodes</h4>");
+                                data.episodes.forEach(item => {
+                                    resultsDiv.append(`
                                     <a href="/episode/${item.id}" class="search-item">
                                         <img src="${item.image}" alt="${item.title}" style="height: 90.06px;">
                                         <div>
@@ -278,73 +280,149 @@
                                         </div>
                                     </a>
                                 `);
-                            });
-                        }
+                                });
+                            }
 
-                        if (data.shows.length === 0 && data.episodes.length === 0) {
-                            resultsDiv.html("<p>No results found</p>");
-                        }
+                            if (data.shows.length === 0 && data.episodes.length === 0) {
+                                resultsDiv.html("<p>No results found</p>");
+                            }
 
-                        $('#search-popup').fadeIn();
+                            $('#search-popup').fadeIn();
+                        }
+                    });
+                }
+            }
+
+            if ($('button[type="button"]').length) {
+                $('button[type="button"]').on('click', function() {
+                    doSearch();
+                });
+            }
+
+            if ($('#search-input').length) {
+                $('#search-input').on('keypress', function(e) {
+                    if (e.which === 13) {
+                        e.preventDefault();
+                        doSearch();
                     }
                 });
             }
-        }
 
-        if ($('button[type="button"]').length) {
-            $('button[type="button"]').on('click', function () {
-                doSearch();
-            });
-        }
+            if ($('#close-popup').length) {
+                $('#close-popup').on('click', function() {
+                    $('#search-popup').fadeOut();
+                });
+            }
 
-        if ($('#search-input').length) {
-            $('#search-input').on('keypress', function (e) {
-                if (e.which === 13) {
-                    e.preventDefault();
-                    doSearch();
+            $(document).on('click', function(e) {
+                if ($(e.target).is('#search-popup')) {
+                    $('#search-popup').fadeOut();
                 }
             });
-        }
 
-        if ($('#close-popup').length) {
-            $('#close-popup').on('click', function () {
-                $('#search-popup').fadeOut();
-            });
-        }
+            if (document.querySelectorAll('[data-tag-id]').length) {
+                document.querySelectorAll('[data-tag-id]').forEach(item => {
+                    item.addEventListener('click', function() {
+                        const tagName = this.textContent;
+                        const tagId = this.getAttribute('data-tag-id');
 
-        $(document).on('click', function (e) {
-            if ($(e.target).is('#search-popup')) {
-                $('#search-popup').fadeOut();
+                        const selectedTag = document.querySelector('#selectedTag');
+                        const genreBtn = document.querySelector(
+                            '#filter-genre input[type="button"]');
+
+                        if (selectedTag && genreBtn) {
+                            selectedTag.value = tagId;
+                            genreBtn.value = tagName;
+                        }
+                    });
+                });
+            }
+
+            const filterBtn = document.querySelector('.filter__btn');
+            if (filterBtn) {
+                filterBtn.addEventListener('click', function() {
+                    const selectedTag = document.querySelector('#selectedTag');
+                    if (selectedTag && selectedTag.value) {
+                        window.location.href = `/random/filter?tag_id=${selectedTag.value}`;
+                    }
+                });
+            }
+
+            const followBtn = document.querySelector('#follow-btn');
+            if (followBtn) {
+                $(document).ready(function() {
+                    $('#follow-btn').on('click', function() {
+                        let btn = $(this);
+                        let showId = btn.data('show-id');
+
+                        $.ajax({
+                            url: "{{ route('show.follow') }}",
+                            method: "POST",
+                            data: {
+                                _token: "{{ csrf_token() }}",
+                                show_id: showId
+                            },
+                            success: function(response) {
+                                if (response.status === 'followed') {
+                                    btn.addClass('followed');
+                                    btn.text('Unfollow');
+                                } else {
+                                    btn.removeClass('followed');
+                                    btn.text('🤍 Follow');
+                                }
+
+                                const countText = response.count === 1 ? '1 follower' :
+                                    response.count + ' followers';
+                                $('#followers-count').text(countText);
+                            },
+
+                            error: function() {
+                                alert('Something went wrong');
+                            }
+                        });
+                    });
+                });
+            }
+
+            const reactionIcon = document.querySelector('.reaction-icon');
+            if (reactionIcon) {
+                $(document).ready(function() {
+                    $('.reaction-icon').on('click', function() {
+                        const btn = $(this);
+                        const episodeId = btn.data('episode');
+                        const isLiked = btn.data('liked');
+
+                        $.ajax({
+                            url: "{{ route('episode.react') }}",
+                            method: "POST",
+                            data: {
+                                _token: "{{ csrf_token() }}",
+                                episode_id: episodeId,
+                                is_liked: isLiked
+                            },
+                            success: function(res) {
+                                if (res.success) {
+                                    const container = btn.closest('.reaction-buttons');
+                                    container.find('.reaction-icon').removeClass(
+                                        'active');
+
+                                    if (isLiked) {
+                                        container.find('.like').addClass('active');
+                                    } else {
+                                        container.find('.dislike').addClass('active');
+                                    }
+
+                                    container.find('.like-count').text( '👍' + res.likes);
+                                    container.find('.dislike-count').text('👎' + res.dislikes);
+                                }
+                            },
+                            error: function() {
+                                alert('Something went wrong.');
+                            }
+                        });
+                    });
+                });
             }
         });
-
-        if (document.querySelectorAll('[data-tag-id]').length) {
-            document.querySelectorAll('[data-tag-id]').forEach(item => {
-                item.addEventListener('click', function () {
-                    const tagName = this.textContent;
-                    const tagId = this.getAttribute('data-tag-id');
-
-                    const selectedTag = document.querySelector('#selectedTag');
-                    const genreBtn = document.querySelector('#filter-genre input[type="button"]');
-
-                    if (selectedTag && genreBtn) {
-                        selectedTag.value = tagId;
-                        genreBtn.value = tagName;
-                    }
-                });
-            });
-        }
-
-        const filterBtn = document.querySelector('.filter__btn');
-        if (filterBtn) {
-            filterBtn.addEventListener('click', function () {
-                const selectedTag = document.querySelector('#selectedTag');
-                if (selectedTag && selectedTag.value) {
-                    window.location.href = `/random/filter?tag_id=${selectedTag.value}`;
-                }
-            });
-        }
-    });
-</script>
+    </script>
 @endsection
-

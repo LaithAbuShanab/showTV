@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Admin;
 use App\Models\Category;
 use App\Models\Episode;
 use App\Models\Season;
@@ -9,6 +10,7 @@ use App\Models\Show;
 use App\Models\Tag;
 use App\Models\User;
 use App\Observers\UserObserver;
+use App\Policies\AdminPolicy;
 use App\Policies\CategoryPolicy;
 use App\Policies\EpisodePolicy;
 use App\Policies\SeasonPolicy;
@@ -43,5 +45,6 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(Show::class, ShowPolicy::class);
         Gate::policy(Episode::class, EpisodePolicy::class);
         Gate::policy(Season::class, SeasonPolicy::class);
+        Gate::policy(Admin::class, AdminPolicy::class);
     }
 }

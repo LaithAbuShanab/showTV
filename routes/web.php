@@ -22,12 +22,15 @@ Route::prefix('search')->name('search.')->group(function () {
 Route::view('dashboard', 'dashboard')->middleware(['auth', 'verified'])->name('dashboard');
 Route::middleware(['auth'])->group(function () {
 
+
     Route::prefix('show')->name('show.')->group(function () {
         Route::get('/{show_id}', [ShowController::class, 'index'])->name('index');
+        Route::post('/follow', [ShowController::class, 'toggleFollow'])->name('follow');
     });
 
     Route::prefix('episode')->name('episode.')->group(function () {
         Route::get('/{episode}', [EpisodeController::class, 'index'])->name('index');
+        Route::post('/react', [EpisodeController::class, 'react'])->name('react');
     });
 
     Route::get('settings/profile', [Settings\ProfileController::class, 'edit'])->name('settings.profile.edit');

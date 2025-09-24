@@ -7,6 +7,97 @@
             font-weight: bold;
             color: #fff;
         }
+
+        .follow-btn {
+            background-color: #1a1a2e;
+            color: #ff00aa;
+            border: 1px solid #ff00aa;
+            border-radius: 20px;
+            font-size: 13px;
+            transition: all 0.3s ease;
+            padding: 10px;
+        }
+
+        .follow-btn:hover {
+            background-color: #ff00aa;
+            color: #fff;
+        }
+
+        .follow-btn.followed {
+            background-color: #ff00aa;
+            color: #fff;
+        }
+
+        .card__meta li {
+            margin-bottom: 0.4rem;
+        }
+
+        .followers-count {
+            color: #aaa;
+            font-size: 13px;
+        }
+
+        .reaction-box {
+            background-color: #1c1b29;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #29283d;
+            box-shadow: 0 0 10px rgba(255, 0, 120, 0.05);
+        }
+
+        .reaction-title {
+            font-size: 18px;
+            color: #ff00aa;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .reaction-buttons {
+            display: flex;
+            gap: 20px;
+        }
+
+        .reaction-icon {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-color: #2d2c3f;
+            border: none;
+            color: #ccc;
+            font-size: 16px;
+            padding: 10px 16px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 0 0 1px #3e3c54;
+        }
+
+        .reaction-icon i {
+            font-size: 18px;
+        }
+
+        .reaction-icon:hover {
+            background-color: #3e3c54;
+            color: #fff;
+        }
+
+        .reaction-icon.active.like {
+            background-color: rgba(255, 215, 0, 0.15);
+            color: #ffd700;
+            box-shadow: inset 0 0 0 1px #ffd700;
+        }
+
+        .reaction-icon.active.dislike {
+            background-color: rgba(255, 0, 102, 0.15);
+            color: #ff007a;
+            box-shadow: inset 0 0 0 1px #ff007a;
+        }
+
+        .count {
+            font-weight: bold;
+            font-size: 14px;
+        }
     </style>
 
     <!-- details -->
@@ -46,15 +137,34 @@
                                         <li>
                                             <span>Genre:</span>
                                             @foreach ($show->tags as $tag)
-                                                <a href="#">{{ $tag->name }}</a>
+                                                <a href="#">{{ $tag->name }}</a>{{ !$loop->last ? ',' : '' }}
                                             @endforeach
                                         </li>
                                         <li><span>Running time:</span> {{ $show->airing_time }}</li>
+
+                                        @auth
+                                            @php
+                                                $isFollowed = auth()->user()->follows->contains($show->id);
+                                                $followerCount = $show->followers()->count();
+                                            @endphp
+                                            <li class="d-flex align-items-center gap-2 mt-2">
+                                                <button id="follow-btn"
+                                                    class="btn btn-sm px-3 py-1 follow-btn {{ $isFollowed ? 'followed' : '' }}"
+                                                    data-show-id="{{ $show->id }}">
+                                                    {{ $isFollowed ? 'Unfollow' : '🤍 Follow' }}
+                                                </button>
+
+                                                <span id="followers-count" class="text-light small" style="margin-left: 5px;">
+                                                    {{ $followerCount }} followers
+                                                </span>
+                                            </li>
+                                        @endauth
                                     </ul>
 
                                     <div class="card__description card__description--details">
                                         <p>{{ $show->description }}</p>
                                     </div>
+
                                 </div>
                             </div>
                             <!-- end card content -->
@@ -62,6 +172,39 @@
                     </div>
                 </div>
                 <!-- end content -->
+
+                @auth
+                    @if ($firstEpisode)
+                        @php
+                            $likeCount = $firstEpisode->likes()->where('is_liked', true)->count();
+                            $dislikeCount = $firstEpisode->likes()->where('is_liked', false)->count();
+                            $userLike = auth()->user()?->likes()->where('episode_id', $firstEpisode->id)->first();
+                        @endphp
+
+                        <div class="col-6">
+                            <div class="reaction-box">
+                                <h5 class="reaction-title">✨ React with Episode</h5>
+                                <div class="reaction-buttons">
+                                    <!-- Like -->
+                                    <button class="reaction-icon like {{ $userLike?->is_liked ? 'active' : '' }}"
+                                        data-episode="{{ $firstEpisode->id }}" data-liked="1">
+                                        <span class="count like-count">👍{{ $likeCount }}</span>
+                                    </button>
+
+                                    <!-- Dislike -->
+                                    <button
+                                        class="reaction-icon dislike {{ $userLike && !$userLike->is_liked ? 'active' : '' }}"
+                                        data-episode="{{ $firstEpisode->id }}" data-liked="0">
+                                        <span class="count dislike-count">👎{{ $dislikeCount }}</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-6"></div>
+                    @endif
+
+                @endauth
 
                 <!-- player -->
                 @php

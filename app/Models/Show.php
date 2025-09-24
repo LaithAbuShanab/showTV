@@ -30,6 +30,11 @@ class Show extends Model implements HasMedia
         return $this->hasMany(Season::class);
     }
 
+    public function followers()
+    {
+        return $this->belongsToMany(User::class, 'follows')->withTimestamps();
+    }
+
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('show_cover')

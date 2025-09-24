@@ -27,6 +27,11 @@ class Episode extends Model implements HasMedia
         return $this->belongsTo(Season::class);
     }
 
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
+
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('episode_cover')

@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
-use App\Models\User;
+use App\Filament\Resources\AdminResource\Pages;
+use App\Filament\Resources\AdminResource\RelationManagers;
+use App\Models\Admin;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -15,13 +15,14 @@ use Filament\Infolists\Infolist;
 use Filament\Infolists\Components\{Grid as InfoGrid, RepeatableEntry, Section as InfoSection, SpatieMediaLibraryImageEntry, TextEntry};
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
 
-class UserResource extends Resource
+class AdminResource extends Resource
 {
-    protected static ?string $model = User::class;
+    protected static ?string $model = Admin::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-users';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $navigationGroup = 'App users';
 
@@ -29,7 +30,6 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-                // Basic Info Section
                 Section::make('Basic Information')
                     ->description('General user identity details.')
                     ->schema([
@@ -39,17 +39,10 @@ class UserResource extends Resource
                                     ->required()
                                     ->maxLength(255)
                                     ->label('Full Name'),
-
-                                SpatieMediaLibraryFileUpload::make('avatar')
-                                    ->label('Avatar')
-                                    ->collection('avatar')
-                                    ->openable()
-                                    ->conversion('user_avatar'),
                             ]),
                     ])
                     ->columns(1),
 
-                // Authentication Section
                 Section::make('Authentication')
                     ->description('Login credentials and access.')
                     ->schema([
@@ -72,14 +65,14 @@ class UserResource extends Resource
                     ])
                     ->columns(1),
 
-                // Section::make('Roles & Permissions')
-                //     ->description('Assign user roles and permissions.')
-                //     ->schema([
-                //         Forms\Components\CheckboxList::make('roles')
-                //             ->relationship(name: 'roles', titleAttribute: 'name')
-                //             ->searchable(),
-                //     ])
-                //     ->columns(1),
+                Section::make('Roles & Permissions')
+                    ->description('Assign user roles and permissions.')
+                    ->schema([
+                        Forms\Components\CheckboxList::make('roles')
+                            ->relationship(name: 'roles', titleAttribute: 'name')
+                            ->searchable(),
+                    ])
+                    ->columns(1),
             ])
             ->columns(1);
     }
@@ -90,13 +83,7 @@ class UserResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')->searchable(),
                 Tables\Columns\TextColumn::make('email')->searchable(),
-                // Tables\Columns\TextColumn::make('roles.name') // relationship column
-                //     ->label('Roles')
-                //     ->badge()
-                //     ->separator(', ')
-                //     ->colors([
-                //         'info',
-                //     ]),
+                Tables\Columns\TextColumn::make('roles.name')->label('Roles')->badge()->separator(', ')->colors(['info',]),
                 Tables\Columns\TextColumn::make('created_at')->dateTime()->sortable()->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')->dateTime()->sortable()->toggleable(isToggledHiddenByDefault: true),
             ])
@@ -130,11 +117,6 @@ class UserResource extends Resource
                             ->schema([
                                 TextEntry::make('name')
                                     ->label('Full Name'),
-
-                                SpatieMediaLibraryImageEntry::make('avatar')
-                                    ->collection('avatar')
-                                    ->conversion('user_avatar')
-                                    ->label('Avatar'),
                             ]),
                     ])
                     ->columns(1)
@@ -193,10 +175,10 @@ class UserResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListUsers::route('/'),
-            'create' => Pages\CreateUser::route('/create'),
-            'view' => Pages\ViewUser::route('/{record}'),
-            'edit' => Pages\EditUser::route('/{record}/edit'),
+            'index' => Pages\ListAdmins::route('/'),
+            'create' => Pages\CreateAdmin::route('/create'),
+            'view' => Pages\ViewAdmin::route('/{record}'),
+            'edit' => Pages\EditAdmin::route('/{record}/edit'),
         ];
     }
 }
