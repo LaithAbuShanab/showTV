@@ -254,7 +254,7 @@
                             resultsDiv.empty();
 
                             if (data.shows.length > 0) {
-                                resultsDiv.append("<h4>Shows</h4>");
+                                resultsDiv.append("<h4 style='color:#ff00aa;'>Shows</h4>");
                                 data.shows.forEach(item => {
                                     resultsDiv.append(`
                                     <a href="/show/${item.id}" class="search-item">
@@ -269,7 +269,7 @@
                             }
 
                             if (data.episodes.length > 0) {
-                                resultsDiv.append("<h4>Episodes</h4>");
+                                resultsDiv.append("<h4 style='color:#ff00aa;'>Episodes</h4>");
                                 data.episodes.forEach(item => {
                                     resultsDiv.append(`
                                     <a href="/episode/${item.id}" class="search-item">
