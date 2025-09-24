@@ -9,42 +9,40 @@ class SearchRepository
 {
     public function index($query)
     {
-        $query = strtolower($query);
+        $search = $query . '*';
 
-        $shows = Show::whereRaw('LOWER(title) LIKE ?', ["%{$query}%"])
-            ->orWhereRaw('LOWER(title) LIKE ?', ["{$query}%"])
-            ->orWhereRaw('LOWER(title) LIKE ?', ["%{$query}"])
+        $shows = Show::selectRaw("*, MATCH(title) AGAINST(? IN BOOLEAN MODE) as relevance", [$search])
+            ->whereRaw("MATCH(title) AGAINST(? IN BOOLEAN MODE)", [$search])
             ->with('category:id,name')
+            ->orderByDesc('relevance')
             ->get()
             ->map(function ($show) {
                 return [
-                    'id' => $show->id,
-                    'title' => $show->title,
-                    'type' => 'Show',
+                    'id'       => $show->id,
+                    'title'    => $show->title,
+                    'type'     => 'Show',
                     'category' => $show->category->name ?? '',
-                    'image' => $show->getFirstMediaUrl('show_cover', 'thumbnail'),
+                    'image'    => $show->getFirstMediaUrl('show_cover', 'thumbnail'),
                 ];
-            })
-            ->values();
+            });
 
-        $episodes = Episode::whereRaw('LOWER(title) LIKE ?', ["%{$query}%"])
-            ->orWhereRaw('LOWER(title) LIKE ?', ["{$query}%"])
-            ->orWhereRaw('LOWER(title) LIKE ?', ["%{$query}"])
+        $episodes = Episode::selectRaw("*, MATCH(title) AGAINST(? IN BOOLEAN MODE) as relevance", [$search])
+            ->whereRaw("MATCH(title) AGAINST(? IN BOOLEAN MODE)", [$search])
+            ->orderByDesc('relevance')
             ->get()
             ->map(function ($episode) {
                 return [
-                    'id' => $episode->id,
-                    'title' => $episode->title,
-                    'type' => 'Episode',
+                    'id'       => $episode->id,
+                    'title'    => $episode->title,
+                    'type'     => 'Episode',
                     'category' => 'Episode',
-                    'image' => $episode->getFirstMediaUrl('episode_cover', 'thumbnail'),
+                    'image'    => $episode->getFirstMediaUrl('episode_cover', 'thumbnail'),
                 ];
-            })
-            ->values();
+            });
 
         return [
-            'shows' => $shows,
-            'episodes' => $episodes,
+            'shows'    => $shows->values(),
+            'episodes' => $episodes->values(),
         ];
     }
 }

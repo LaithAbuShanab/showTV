@@ -80,11 +80,11 @@
                     </div>
                 @else
                     <div class="col-12 col-xl-6">
-                        <video controls crossorigin playsinline
-                        poster="{{ asset('frontend/img/sorry.png') }}" id="player">
-                        <source src="{{ $videoUrl }}" type="video/mp4">
-                        <a href="{{ $videoUrl }}" download>Download</a>
-                    </video>
+                        <video controls crossorigin playsinline poster="{{ asset('frontend/img/sorry.png') }}"
+                            id="player">
+                            <source src="{{ $videoUrl }}" type="video/mp4">
+                            <a href="{{ $videoUrl }}" download>Download</a>
+                        </video>
                     </div>
                 @endif
                 <!-- end player -->
